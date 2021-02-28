@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useEffect } from "react";
+import { TodoContext } from "./TodoContext";
+import ListTodos from "./components/ListTodos";
+import CreateTodo from "./components/CreateTodo";
 
 function App() {
+  const { fetchTodos } = useContext(TodoContext);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/todos")
+      .then((res) => res.json())
+      .then((data) => fetchTodos(data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="row p-5">
+        <CreateTodo />
+        <ListTodos />
+      </div>
     </div>
   );
 }
